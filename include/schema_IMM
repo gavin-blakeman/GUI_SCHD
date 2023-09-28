@@ -1,0 +1,4 @@
+﻿include "include/database/core/tbl_objectTypes.h"
+
+SCHEMA msmERP
+
