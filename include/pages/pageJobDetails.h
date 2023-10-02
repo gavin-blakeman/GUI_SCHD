@@ -30,8 +30,8 @@
 //
 //**********************************************************************************************************************************
 
-#ifndef PAGECONFIGURATION_H
-#define PAGECONFIGURATION_H
+#ifndef PAGEJOBDETAILS_H
+#define PAGEJOBDETAILS_H
 
   // Standard C++ library header files
 
@@ -41,7 +41,6 @@
 
 #include "include/core/typeDefinitions.h"
 #include "include/database/tables/core/tbl_objectTypes.h"
-#include "include/database/models/modelCostElements.h"
 #include "include/pages/pageTransactionBase.h"
 
 class CApplication;
@@ -69,7 +68,7 @@ namespace transactionPages
     Wt::WLineEdit *lineEditShortText = nullptr;
     Wt::WComboBox *comboBoxCostElement = nullptr;
 
-    std::shared_ptr<models::CModelCostElements> modelCostElements;
+    //std::shared_ptr<models::CModelCostElements> modelCostElements;
 
     virtual objectType_t objectTypeID() const override { return OT_IMM_COSTTYPES; }
     virtual void createUI() override;
@@ -92,4 +91,4 @@ namespace transactionPages
 
 }
 
-#endif // PAGECONFIGURATION_H
+#endif // PAGEJOBDETAILS_H

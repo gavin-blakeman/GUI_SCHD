@@ -1,7 +1,7 @@
 ﻿//**********************************************************************************************************************************
 //
 // PROJECT:             msmERP
-// FILE:                pageExchanges
+// FILE:                pageCostTypes
 // SUBSYSTEM:           Module: Investement Management
 // LANGUAGE:						C++
 // TARGET OS:           LINUX
@@ -30,7 +30,7 @@
 //
 //**********************************************************************************************************************************
 
-#include "include/pages/pageExchanges.h"
+#include "include/pages/pageJobHistory.h"
 
   // Wt framework header files.
 
@@ -44,8 +44,8 @@
   // msmERP header files
 
 #include "include/pages/GUI_Templates.h"
-#include "include/database/tables/tbl_imm_exchanges.h"
-#include "include/database/views/viewExchange.h"
+//#include "include/database/tables/tbl_imm_costTypes.h"
+//#include "include/database/views/viewCostType.h"
 
 namespace transactionPages
 {
@@ -54,35 +54,33 @@ namespace transactionPages
   /// @param[in]  a: The application that owns this instance.
   /// @param[in]  p: The Parametrs passed to the function on creation.
   /// @throws
-  /// @version    2023-07-23/GGB - Function created.
+  /// @version    2023-08-08/GGB - Function created.
 
-  CPageExchanges::CPageExchanges(CApplication &a, std::unique_ptr<parameters_t> p) : CPageTransactionView(a, std::move(p))
+  CPageCostTypes::CPageCostTypes(CApplication &a, std::unique_ptr<parameters_t> p) : CPageTransactionView(a, std::move(p))
   {
-    record_ = std::make_unique<views::CViewExchange>(a);
+//    record_ = std::make_unique<views::CViewCostType>(a);
 
-    modelCountry= std::make_shared<models::CModelCountry>(a, models::CModelCountry::MU_COMBO);
-    modelCountry->reload();
+//    modelCostElements = std::make_shared<models::CModelCostElements>(a, models::CModelCostElements::MU_COMBO_NULL);
+//    modelCostElements->reload();
   }
 
   /// @brief      Clears all the fields.
   /// @throws     None.
-  /// @version    2023-07-23/GGB - Function created.
+  /// @version    2023-08-08/GGB - Function created.
 
-  void CPageExchanges::clearFields() noexcept
+  void CPageCostTypes::clearFields() noexcept
   {
     lineEditShortText->setText("");
-    lineEditLongText->setText("");
-    lineEditSuffix->setText("");
-    comboBoxCountry->setCurrentIndex(0);
+    comboBoxCostElement->setCurrentIndex(0);
   }
 
   /// @brief    Creates the UI for account creation/managment
   /// @throws
-  /// @version  2023-03-27/GGB - Function created.
+  /// @version  2023-08-08/GGB - Function created.
 
-  void CPageExchanges::createUI()
+  void CPageCostTypes::createUI()
   {
-    auto result = container()->addWidget(std::make_unique<Wt::WTemplate>(templateExchanges));
+    auto result = container()->addWidget(std::make_unique<Wt::WTemplate>(templateCostTypes));
     result->addFunction("id", &Wt::WTemplate::Functions::id);
 
     lineEditShortText= result->bindWidget("lineEditShortText", std::make_unique<Wt::WLineEdit>());
@@ -90,10 +88,11 @@ namespace transactionPages
     {
       switch(internalMode)
       {
+        case BT_CREATE:
         case BT_UPDATE:
         {
           dirty();
-          dynamic_cast<views::CViewExchange *>(record_.get())->shortText(lineEditShortText->text().toUTF8());
+          //dynamic_cast<views::CViewCostType*>(record_.get())->shortText(lineEditShortText->text().toUTF8());
           break;
         }
         case BT_FIND:
@@ -147,101 +146,82 @@ namespace transactionPages
     createStatusButton(btn);
     lineEditStatus->setEnabled(false);
 
-    lineEditLongText = result->bindWidget("lineEditLongText", std::make_unique<Wt::WLineEdit>());
-    lineEditLongText->changed().connect([this]
-    {
-      dynamic_cast<views::CViewExchange *>(record_.get())->longText(lineEditLongText->text().toUTF8());
-      dirty();
-    });
-
-
-    comboBoxCountry = result->bindWidget("comboBoxCountry", std::make_unique<Wt::WComboBox>());
-    comboBoxCountry->setModel(modelCountry);
-    comboBoxCountry->activated().connect([this](int currentIndex)
-    {
-      dynamic_cast<views::CViewExchange *>(record_.get())->country(modelCountry->index2ID(currentIndex));
-      dirty();
-    });
-
-    lineEditSuffix = result->bindWidget("lineEditSuffix", std::make_unique<Wt::WLineEdit>());
-    lineEditSuffix->changed().connect([this]
-    {
-      dynamic_cast<views::CViewExchange *>(record_.get())->suffix(lineEditSuffix->text().toUTF8());
-      dirty();
-    });
+//    comboBoxCostElement = result->bindWidget("comboBoxCostElement", std::make_unique<Wt::WComboBox>());
+//    comboBoxCostElement->setModel(modelCostElements);
+//    comboBoxCostElement->activated().connect([this](int currentIndex)
+//    {
+//      dynamic_cast<views::CViewCostType *>(record_.get())->costElement(modelCostElements->index2ID(currentIndex));
+//      dirty();
+//    });
 
     updateTransactions();
     enableEdit(false);
   }
 
-  /// @brief Enables/Disables the controls as required.
-  /// @param[in] enable: The required state of the controls.
+  /// @brief      Enables/Disables the controls as required.
+  /// @param[in]  enable: The required state of the controls.
   /// @throws
-  /// @version 2023-03-28/GGB - Function created.
+  /// @version    2023-08-08/GGB - Function created.
 
-  void CPageExchanges::enableEdit(bool enable)
+  void CPageCostTypes::enableEdit(bool enable)
   {
     lineEditShortText->setEnabled(enable);
-    lineEditLongText->setEnabled(enable);
-    lineEditSuffix->setEnabled(enable);
-    comboBoxCountry->setEnabled(enable);
+    comboBoxCostElement->setEnabled(enable);
   }
 
   /// @brief populate the fields as required.
   /// @throws
   /// @version 2023-03-29/GGB - Function created.
 
-  void CPageExchanges::populateFields()
+  void CPageCostTypes::populateFields()
   {
-    lineEditShortText->setText(dynamic_cast<views::CViewExchange *>(record_.get())->shortText());
-    lineEditLongText->setText(dynamic_cast<views::CViewExchange *>(record_.get())->longText());
-    lineEditSuffix->setText(dynamic_cast<views::CViewExchange *>(record_.get())->suffix());
+//    lineEditShortText->setText(dynamic_cast<views::CViewCostType *>(record_.get())->shortText());
 
-    lineEditStatus->setText(record_->statusText());
+//    lineEditStatus->setText(record_->statusText());
 
-    try
-    {
-      comboBoxCountry->setCurrentIndex(modelCountry->ID2Index(dynamic_cast<views::CViewExchange *>(record_.get())->country()));
-    }
-    catch(...)
-    {
-        // Auto fix errors.
+//    try
+//    {
+//      comboBoxCostElement->setCurrentIndex(modelCostElements->ID2Index(dynamic_cast<views::CViewCostType *>(record_.get())->costElement()));
+//    }
+//    catch(...)
+//    {
+//      // Auto fix errors.
 
-      comboBoxCountry->setCurrentIndex(0);
-      dynamic_cast<views::CViewExchange *>(record_.get())->country(0);
-      dirty();
-    }
+//      comboBoxCostElement->setCurrentIndex(0);
+//      dynamic_cast<views::CViewCostType *>(record_.get())->costElement(0);
+//      dirty();
+//    }
     updateTransactions();
   }
 
   /// @brief      Processes the record identified in the FIND command.
   /// @throws
-  /// @version    2023-07-23/GGB - Function created.
+  /// @version    2023-08-08/GGB - Function created.
 
-  void CPageExchanges::processFind()
+  void CPageCostTypes::processFind()
   {
     using namespace database;
 
     std::string tempST = lineEditShortText->text().toUTF8();
-    bool recordExists =  tbl_imm_exchanges::recordExists(application(), tempST);
+//    bool recordExists =  tbl_imm_costTypes::recordExists(application(), tempST);
 
-    if (recordExists)
-    {
-      record_->ID(tbl_imm_exchanges::recordID(application(), tempST));
-      record_->loadData();
+//    if (recordExists)
+//    {
+//      record_->ID(tbl_imm_costTypes::recordID(application(), tempST));
+//      record_->loadData();
 
-      populateFields();
-      lineEditShortText->setEnabled(false);
-      dirty(false);
-      internalMode = BT_NONE;
-    }
-    else if (!recordExists)
-    {
-      Wt::WMessageBox::show("Exchange does not exist!",
-                            "The specified record does not exist.",
-                            Wt::StandardButton::Ok);
+//      populateFields();
+//      lineEditShortText->setEnabled(false);
+//      dirty(false);
+//      internalMode = BT_NONE;
+//    }
+//    else if (!recordExists)
+//    {
+//      Wt::WMessageBox::show("Cost Type does not exist!",
+//                            "The specified record does not exist.",
+//                            Wt::StandardButton::Ok);
 
-    }
+//    }
   }
 
 }

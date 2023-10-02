@@ -1,7 +1,7 @@
 ﻿//**********************************************************************************************************************************
 //
 // PROJECT:             msmERP
-// FILE:                pageExchanges
+// FILE:                pageCostTypes
 // SUBSYSTEM:           Module: Investement Management
 // LANGUAGE:						C++
 // TARGET OS:           LINUX
@@ -30,8 +30,8 @@
 //
 //**********************************************************************************************************************************
 
-#ifndef PAGEEXCHANGES_H
-#define PAGEEXCHANGES_H
+#ifndef PAGEJOBHISTORY_H
+#define PAGEJOBHISTORY_H
 
   // Standard C++ library header files
 
@@ -41,7 +41,7 @@
 
 #include "include/core/typeDefinitions.h"
 #include "include/database/tables/core/tbl_objectTypes.h"
-#include "include/database/models/core/modelCountry.h"
+
 #include "include/pages/pageTransactionView.h"
 
 class CApplication;
@@ -49,39 +49,37 @@ class CApplication;
 namespace transactionPages
 {
 
-  class CPageExchanges final : public CPageTransactionView
+  class CPageCostTypes final : public CPageTransactionView
   {
   public:
-    CPageExchanges(CApplication &, std::unique_ptr<parameters_t>);
+    CPageCostTypes(CApplication &, std::unique_ptr<parameters_t>);
 
     static std::unique_ptr<CPageTransaction> createClass(CApplication &a, std::unique_ptr<parameters_t> p)
     {
-      return std::make_unique<CPageExchanges>(a, std::move(p));
+      return std::make_unique<CPageCostTypes>(a, std::move(p));
     }
 
   private:
-    CPageExchanges() = delete;
-    CPageExchanges(CPageExchanges const &) = delete;
-    CPageExchanges operator=(CPageExchanges const &) = delete;
+    CPageCostTypes() = delete;
+    CPageCostTypes(CPageCostTypes const &) = delete;
+    CPageCostTypes operator=(CPageCostTypes const &) = delete;
 
     Wt::WLineEdit *lineEditStatus = nullptr;
 
-    Wt::WComboBox *comboBoxCountry = nullptr;
     Wt::WLineEdit *lineEditShortText = nullptr;
-    Wt::WLineEdit *lineEditLongText = nullptr;
-    Wt::WLineEdit *lineEditSuffix;
+    Wt::WComboBox *comboBoxCostElement = nullptr;
 
-    std::shared_ptr<models::CModelCountry> modelCountry;
+    //std::shared_ptr<models::CModelCostElements> modelCostElements;
 
-    virtual objectType_t objectTypeID() const override { return OT_IMM_EXCHANGES; }
+    virtual objectType_t objectTypeID() const override { return OT_IMM_COSTTYPES; }
     virtual void createUI() override;
     virtual void enableEdit(bool) override;
     virtual void clearFields() noexcept override;
     virtual void populateFields() override;
     virtual void processFind() override;
     virtual void processModeFind() override {};
-//    virtual void processModeEdit() override {};
-//    virtual void processModeCreate() override {};
+    //    virtual void processModeEdit() override {};
+    //    virtual void processModeCreate() override {};
     virtual void processModeSearch() override {};
     virtual void processModeRecordChange() override {};
 
@@ -89,4 +87,4 @@ namespace transactionPages
 
 }
 
-#endif // PAGEEXCHANGES_H
+#endif // PAGEJOBHISTORY_H

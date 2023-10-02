@@ -30,7 +30,7 @@
 //
 //**********************************************************************************************************************************
 
-#include "include/pages/pageConfiguration.h"
+#include "include/pages/pageJobDetails.h"
 
   // Wt framework header files.
 
@@ -44,8 +44,8 @@
   // msmERP header files
 
 #include "include/pages/GUI_Templates.h"
-#include "include/database/tables/tbl_imm_costTypes.h"
-#include "include/database/views/viewCostType.h"
+//#include "include/database/tables/tbl_imm_costTypes.h"
+//#include "include/database/views/viewCostType.h"
 
 namespace transactionPages
 {
@@ -102,46 +102,46 @@ namespace transactionPages
       };
     });
 
-    auto btn = result->bindWidget("buttonAction", std::make_unique<Wt::WPushButton>("Action"));
-    {
-//      auto popup = std::make_unique<Wt::WPopupMenu>();
-//      popup->addItem("Find");
-//      popup->addItem("Search");
-//      auto pp = popup.get();
-//      btn->setMenu(std::move(popup));
-//      btn->setStyleClass("btn-outline-primary");
-//      btn->setAttributeValue("type", "button");
-//      pp->itemSelected().connect([this](Wt::WMenuItem *item)
-//      {
-//        previousMode = internalMode;
-//        if (item->text() == "Find")
-//        {
-//          internalMode = BT_FIND;
-//          enableEdit(false);
-//          clearFields();
-//          lineEditShortText->setEnabled(true);
-//          lineEditShortText->setFocus(true);
-//          dirty(false);
-//        }
-//        else if (item->text() == "Search")
-//        {
-//          internalMode = BT_SEARCH;
-//        }
-//        else
-//        {
-//          CODE_ERROR();
-//        };
-//        checkSave();
-//      });
-    }
+//    auto btn = result->bindWidget("buttonAction", std::make_unique<Wt::WPushButton>("Action"));
+//    {
+////      auto popup = std::make_unique<Wt::WPopupMenu>();
+////      popup->addItem("Find");
+////      popup->addItem("Search");
+////      auto pp = popup.get();
+////      btn->setMenu(std::move(popup));
+////      btn->setStyleClass("btn-outline-primary");
+////      btn->setAttributeValue("type", "button");
+////      pp->itemSelected().connect([this](Wt::WMenuItem *item)
+////      {
+////        previousMode = internalMode;
+////        if (item->text() == "Find")
+////        {
+////          internalMode = BT_FIND;
+////          enableEdit(false);
+////          clearFields();
+////          lineEditShortText->setEnabled(true);
+////          lineEditShortText->setFocus(true);
+////          dirty(false);
+////        }
+////        else if (item->text() == "Search")
+////        {
+////          internalMode = BT_SEARCH;
+////        }
+////        else
+////        {
+////          CODE_ERROR();
+////        };
+////        checkSave();
+////      });
+//    }
 
     lineEditStatus = result->bindWidget("lineEditStatus", std::make_unique<Wt::WLineEdit>());
-    btn = result->bindWidget("buttonStatus", std::make_unique<Wt::WPushButton>("Action"));
+    //btn = result->bindWidget("buttonStatus", std::make_unique<Wt::WPushButton>("Action"));
 //    createStatusButton(btn);
     lineEditStatus->setEnabled(false);
 
     comboBoxCostElement = result->bindWidget("comboBoxCostElement", std::make_unique<Wt::WComboBox>());
-    comboBoxCostElement->setModel(modelCostElements);
+    //comboBoxCostElement->setModel(modelCostElements);
     comboBoxCostElement->activated().connect([this](int currentIndex)
     {
 //      dynamic_cast<views::CViewCostType *>(record_.get())->costElement(modelCostElements->index2ID(currentIndex));

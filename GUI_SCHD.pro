@@ -59,9 +59,17 @@ INCLUDEPATH +=  \
     "../../../modules/module_SCHD" \
 
 SOURCES += \
+  source/GUI_SCHD.cpp \
+  source/pages/pageJobDetails.cpp \
+  source/pages/pageJobHistory.cpp \
+  source/pages/pageScheduleJobs.cpp
 
 
 HEADERS += \
+  include/pages/GUI_Templates.h \
+  include/pages/pageJobDetails.h \
+  include/pages/pageJobHistory.h \
+  include/pages/pageScheduleJobs.h
 
 
 

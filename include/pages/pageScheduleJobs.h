@@ -1,8 +1,8 @@
 ﻿//**********************************************************************************************************************************
 //
 // PROJECT:             msmERP
-// FILE:                pageCostTypes
-// SUBSYSTEM:           Module: Investement Management
+// SUBSYSTEM:           Module: Scheduler
+// FILE:                pageScheduleJobs
 // LANGUAGE:						C++
 // TARGET OS:           LINUX
 // LIBRARY DEPENDANCE:	None.
@@ -26,12 +26,12 @@
 //
 // OVERVIEW:
 //
-// HISTORY:             2023-07-25/GGB - File Created
+// HISTORY:             2023-09-30/GGB - File Created
 //
 //**********************************************************************************************************************************
 
-#ifndef PAGECOSTTYPES_H
-#define PAGECOSTTYPES_H
+#ifndef PAGESCHEDULEJOBS_H
+#define PAGESCHEDULEJOBS_H
 
   // Standard C++ library header files
 
@@ -41,7 +41,7 @@
 
 #include "include/core/typeDefinitions.h"
 #include "include/database/tables/core/tbl_objectTypes.h"
-#include "include/database/models/modelCostElements.h"
+#include "include/database/models/core/modelCountry.h"
 #include "include/pages/pageTransactionView.h"
 
 class CApplication;
@@ -49,37 +49,41 @@ class CApplication;
 namespace transactionPages
 {
 
-  class CPageCostTypes final : public CPageTransactionView
+  class CPageScheduleJobs final : public CPageTransactionView
   {
   public:
-    CPageCostTypes(CApplication &, std::unique_ptr<parameters_t>);
+    CPageScheduleJobs(CApplication &, std::unique_ptr<parameters_t>);
 
     static std::unique_ptr<CPageTransaction> createClass(CApplication &a, std::unique_ptr<parameters_t> p)
     {
-      return std::make_unique<CPageCostTypes>(a, std::move(p));
+      return std::make_unique<CPageScheduleJobs>(a, std::move(p));
     }
 
   private:
-    CPageCostTypes() = delete;
-    CPageCostTypes(CPageCostTypes const &) = delete;
-    CPageCostTypes operator=(CPageCostTypes const &) = delete;
+    CPageScheduleJobs() = delete;
+    CPageScheduleJobs(CPageScheduleJobs const &) = delete;
+    CPageScheduleJobs(CPageScheduleJobs &&) = delete;
+    CPageScheduleJobs &operator=(CPageScheduleJobs const &) = delete;
+    CPageScheduleJobs &operator=(CPageScheduleJobs &&) = delete;
 
     Wt::WLineEdit *lineEditStatus = nullptr;
 
+    Wt::WComboBox *comboBoxCountry = nullptr;
     Wt::WLineEdit *lineEditShortText = nullptr;
-    Wt::WComboBox *comboBoxCostElement = nullptr;
+    Wt::WLineEdit *lineEditLongText = nullptr;
+    Wt::WLineEdit *lineEditSuffix;
 
-    std::shared_ptr<models::CModelCostElements> modelCostElements;
+    std::shared_ptr<models::CModelCountry> modelCountry;
 
-    virtual objectType_t objectTypeID() const override { return OT_IMM_COSTTYPES; }
+    virtual objectType_t objectTypeID() const override { return OT_IMM_EXCHANGES; }
     virtual void createUI() override;
     virtual void enableEdit(bool) override;
     virtual void clearFields() noexcept override;
     virtual void populateFields() override;
     virtual void processFind() override;
     virtual void processModeFind() override {};
-    //    virtual void processModeEdit() override {};
-    //    virtual void processModeCreate() override {};
+//    virtual void processModeEdit() override {};
+//    virtual void processModeCreate() override {};
     virtual void processModeSearch() override {};
     virtual void processModeRecordChange() override {};
 
@@ -87,4 +91,4 @@ namespace transactionPages
 
 }
 
-#endif // PAGECOSTTYPES_H
+#endif // PAGESCHEDULEJOBS_H
