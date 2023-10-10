@@ -30,7 +30,7 @@
 //
 //**********************************************************************************************************************************
 
-#include "include/pluginInterface/interfaceUserTransaction.h"
+#include "include/pluginInterface/pluginInterfaceUI.h"
 
   // msmERP header files
 
